@@ -8,7 +8,7 @@ export default class Game extends Phaser.Scene{
     }
     
     init() {
-        this.timeLimit = 5;
+        this.timeLimit = 60;
         this.timeRemain = this.timeLimit;
         
         this.missedMouses = 0;
