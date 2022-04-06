@@ -6,7 +6,7 @@ export default class GameLoading extends Phaser.Scene{
     }
 
     create(){
-        this.add.text(0, 0, 'Loading....');
+        this.add.text(0, 0, 'Loading...', { fontSize: 20, fontFamily: 'JosefinSans' });
         gapi.load('client', () => {
             gapi.client.init({
                 'apiKey': 'AIzaSyB2mfRHM_obYIFlurn6ppe0Nv16PDr0818',

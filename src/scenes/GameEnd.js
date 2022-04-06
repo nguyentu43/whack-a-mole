@@ -25,7 +25,7 @@ export default class GameEnd extends Phaser.Scene{
             this.gameConfig.width / 2, 
             this.gameConfig.height / 2 - 20, 
             resultTxt, 
-            {fontSize: 20, color: 'black'}
+            {fontSize: 20, color: 'black ', fontFamily: 'JosefinSans'}
         ).setOrigin(0.5);
 
         this.add.image(this.gameConfig.width / 2, 
