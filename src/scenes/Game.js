@@ -1,6 +1,6 @@
 import {
     MouseContainer
-} from "../gameObjects/mouseContainer.js";
+} from "../gameObjects/MouseContainer.js";
 import Phaser from "../lib/phaser.js";
 
 export default class Game extends Phaser.Scene {
@@ -94,12 +94,6 @@ export default class Game extends Phaser.Scene {
                 rIndex * (size + size / 3) + halfHeight - size,
                 size);
             this.add.existing(mouse);
-            this.time.addEvent({
-                callback: () => mouse.mouseUp(),
-                delay: i * 1000,
-                loop: false
-            });
-
         }
 
         this.hammer = this.add.image(0, 0, 'hammer')

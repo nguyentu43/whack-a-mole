@@ -20,6 +20,7 @@ export default class GameLoading extends Phaser.Scene{
               })
               .then((response) => {
                   const questions = response.result.values;
+                  this.sound.resumeAll();
                   this.scene.get('game').setQuestions(questions);
                   this.scene.start('game');
               })

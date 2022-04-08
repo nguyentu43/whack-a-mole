@@ -23,7 +23,7 @@ export default class GameEnd extends Phaser.Scene{
 
         this.add.text(
             this.gameConfig.width / 2, 
-            this.gameConfig.height / 2 - 20, 
+            this.gameConfig.height / 2, 
             resultTxt, 
             {fontSize: 20, color: 'black ', fontFamily: 'JosefinSans'}
         ).setOrigin(0.5);

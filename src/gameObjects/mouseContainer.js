@@ -50,7 +50,7 @@ export class MouseContainer extends Phaser.GameObjects.Container {
             props: {
                 alpha: 0
             },
-            duration: 500,
+            duration: 100,
             ease: 'Power2'
         });
 
@@ -58,19 +58,13 @@ export class MouseContainer extends Phaser.GameObjects.Container {
         this.add(this.textBox);
 
         this.sprite.on('pointerdown', (event) => {
-            this.clickSprite();
+            this.clickMouse();
         });
 
         this.sprite.on('animationcomplete', (event) => {
             if (event.key === 'mouse-up') {
-                this.scene.time.addEvent({
-                    callback: () => {
-                        this.sprite.anims.play('mouse-down');
-                    },
-                    loop: false,
-                    callbackScope: this,
-                    delay: Phaser.Utils.Array.GetRandom([5, 10]) * 1000
-                });
+                const delay = Phaser.Utils.Array.GetRandom([5, 7, 10]) * 1000;
+                this.mouseDownDelayEvent = this.scene.time.delayedCall(delay, () => this.sprite.anims.play('mouse-down'));
             } else if (event.key === 'mouse-down') {
                 this.textBoxHideTween.startDelay = 0;
                 this.textBoxHideTween.play();
@@ -79,16 +73,20 @@ export class MouseContainer extends Phaser.GameObjects.Container {
                 if (this.isCorrect) {
                     this.scene.missedMouses++;
                 }
-                this.mouseUp();
+                this.mouseUpTimer();
             }
         });
+
+        this.mouseUpTimer();
     }
 
-    clickSprite() {
+    clickMouse() {
         const {
             currentAnim
         } = this.sprite.anims;
         if (currentAnim && ['mouse-up'].indexOf(currentAnim.key) !== -1) {
+
+            this.mouseDownDelayEvent.destroy();
 
             if (this.isCorrect) {
                 this.sprite.anims.play('mouse-dizzy');
@@ -102,28 +100,22 @@ export class MouseContainer extends Phaser.GameObjects.Container {
                 this.scene.wrongMouses++;
             }
             this.textBoxHideTween.play();
-            this.mouseUp();
+            this.mouseUpTimer();
         }
     }
 
     mouseUp() {
-        this.isCorrect = Phaser.Math.Between(0, 1);
-
-        const options = this.scene.randomQuestion[this.isCorrect ? 1 : 2];
-
-        this.textBox.getAt(1).text = Phaser.Utils.Array.GetRandom(options);
-
         if (this.scene.timeRemain === 0) return;
+        this.isCorrect = Phaser.Math.Between(0, 1);
+        const options = this.scene.randomQuestion[this.isCorrect ? 1 : 2];
+        this.textBox.getAt(1).text = Phaser.Utils.Array.GetRandom(options);
+        this.textBoxTween.play();
+        this.scene.sound.play('up');
+        this.sprite.anims.play('mouse-up');
+    }
 
-        this.scene.time.addEvent({
-            callback: () => {
-                this.textBoxTween.play();
-                this.scene.sound.play('up');
-                this.sprite.anims.play('mouse-up');
-            },
-            loop: false,
-            delay: Phaser.Utils.Array.GetRandom([2, 5, 10, 15]) * 1000,
-            callbackScope: this
-        });
+    mouseUpTimer() {
+        const delay = Phaser.Utils.Array.GetRandom([3, 5, 7.5, 10, 15]) * 1000;
+        this.scene.time.delayedCall(delay, () => this.mouseUp());
     }
 }
