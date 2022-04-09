@@ -173,7 +173,7 @@ export default class Game extends Phaser.Scene {
     }
 
     timeStart() {
-        this.sound.play('bg-music', { volume: 0.3 });
+        this.sound.play('bg-music', { volume: 0.3, loop: true });
         this.timeEvent = this.time.addEvent({
             callback: this.timeEnd,
             delay: 1000,
